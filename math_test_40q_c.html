@@ -1,0 +1,698 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>Grade 3 FAST Math - Unit 15 Practice Test C</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html{font-size:16px;height:100%}
+body{font-family:Arial,Helvetica,sans-serif;background:#e8eaf0;color:#111;height:100%;display:flex;flex-direction:column;overflow:hidden}
+button{font-family:inherit;cursor:pointer;touch-action:manipulation;-webkit-appearance:none}
+#topBar{background:#fff;border-bottom:2px solid #bbb;padding:5px 14px;display:flex;align-items:center;gap:8px;flex-shrink:0;flex-wrap:wrap;font-size:13px}
+#topBar .title{font-weight:bold;font-size:13px;flex:1;min-width:180px}
+#topBar .user{font-size:11.5px;color:#555;white-space:nowrap}
+#helpBtn{background:#1a4fa0;color:#fff;border:none;border-radius:4px;padding:2px 10px;font-size:12px;font-weight:bold}
+#teacherBtn{background:#7a3a00;color:#fff;border:none;border-radius:4px;padding:2px 10px;font-size:12px;font-weight:bold;cursor:pointer}
+#toolbar{background:#fff;border-bottom:2px solid #ccc;padding:4px 10px;display:flex;align-items:center;gap:5px;flex-shrink:0;flex-wrap:wrap}
+.tbtn{display:flex;flex-direction:column;align-items:center;gap:1px;background:none;border:none;font-size:10px;color:#333;padding:3px 6px;border-radius:4px;min-height:38px;justify-content:center}
+.tbtn:hover{background:#eee}
+.tbtn svg{width:19px;height:19px}
+.tbtn.nav-t{background:#e4f0e4;border:1px solid #5a9a5a}
+.tbtn.save-t{background:#e4f0e4;border:1px solid #5a9a5a}
+.tbtn.pause-t{background:#fff3e0;border:1px solid #d4861a}
+#tbSpacer{flex:1}
+#qStrip{background:#fff;border-bottom:1px solid #ccc;padding:4px 10px;display:flex;align-items:center;gap:3px;flex-shrink:0;overflow-x:auto;-webkit-overflow-scrolling:touch}
+.qDot{min-width:32px;height:32px;border:1.5px solid #aaa;background:#fff;border-radius:4px;font-size:11.5px;font-weight:bold;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;transition:all .12s;position:relative}
+.qDot:hover{background:#dde8ff}
+.qDot.active{background:#1a4fa0;color:#fff;border-color:#1a4fa0}
+.qDot.done::after{content:'✓';position:absolute;bottom:1px;right:2px;font-size:7px;color:#2a8a2a;line-height:1}
+.qDot.active.done::after{color:#90ee90}
+.qDotSep{min-width:10px;height:32px;display:flex;align-items:center;justify-content:center;color:#bbb;font-size:16px;pointer-events:none;flex-shrink:0;font-weight:bold}
+#main{display:flex;flex:1 1 0;min-height:0;overflow:hidden}
+#qPanel{flex:1;display:flex;flex-direction:column;min-width:0;min-height:0;background:#fff;height:100%}
+#qHeader{background:#1a4fa0;color:#fff;padding:7px 14px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
+#qNum{font-size:21px;font-weight:bold}
+#qMenuBtn{background:rgba(255,255,255,.2);border:none;color:#fff;border-radius:4px;padding:3px 8px;font-size:16px}
+#qMeta{padding:3px 14px;font-size:11px;color:#666;border-bottom:1px solid #e0e0e0;background:#fafafa;display:flex;gap:10px;flex-shrink:0}
+#qBody{flex:1 1 0;overflow-y:scroll;-webkit-overflow-scrolling:touch;padding:20px 28px;min-height:0}
+.qPrompt{font-size:15px;line-height:1.55;margin-bottom:16px;max-width:720px}
+.qPrompt strong{font-weight:bold}
+.qExcerpt{background:#f4f6fa;border-left:3px solid #1a4fa0;padding:9px 13px;margin-bottom:14px;line-height:1.6;border-radius:0 4px 4px 0;font-size:14px;max-width:720px}
+.partLabel{font-weight:bold;color:#1a4fa0;margin-bottom:6px;font-size:14.5px}
+.partDivider{border:none;border-top:2px dashed #ccc;margin:16px 0;max-width:720px}
+.choices{display:flex;flex-direction:column;gap:8px;max-width:680px}
+.choice{display:flex;align-items:flex-start;gap:10px;padding:10px 13px;border:1.5px solid #ccc;border-radius:6px;cursor:pointer;transition:all .13s;background:#fff;text-align:left;width:100%;font-size:14.5px;line-height:1.45;font-family:Arial,Helvetica,sans-serif;min-height:46px}
+.choice:hover{background:#eef2ff;border-color:#7090d0}
+.choice.sel{background:#dde8ff;border-color:#1a4fa0}
+.choice.correct{background:#d4f5d4;border-color:#2a8a2a}
+.choice.wrong{background:#ffd8d8;border-color:#cc3333}
+.choice:disabled{cursor:default}
+.cMarker{width:17px;height:17px;border:2px solid #999;border-radius:50%;flex-shrink:0;margin-top:2px;background:#fff;display:flex;align-items:center;justify-content:center}
+.choice.sel .cMarker{background:#1a4fa0;border-color:#1a4fa0}
+.choice.sel .cMarker::after{content:'';width:6px;height:6px;background:#fff;border-radius:50%;display:block}
+.cMarker.chk{border-radius:3px}
+.choice.sel .cMarker.chk::after{content:'✓';font-size:10px;color:#fff;font-weight:bold;border-radius:0;width:auto;height:auto;background:none}
+.cLetter{font-weight:bold;color:#1a4fa0;min-width:19px;font-size:14.5px}
+.frac{display:inline-flex;flex-direction:column;align-items:center;vertical-align:middle;margin:0 2px;font-size:14.5px;line-height:1.1}
+.frac .num,.frac .den{display:block;text-align:center;padding:0 3px}
+.frac .bar{border-top:1.5px solid currentColor;width:100%}
+.tblQ{width:100%;max-width:680px;border-collapse:collapse;font-size:13.5px;margin-top:5px}
+.tblQ th{background:#1a4fa0;color:#fff;padding:7px 9px;text-align:center;border:1px solid #aaa;font-weight:bold}
+.tblQ td{border:1px solid #bbb;padding:7px 9px;text-align:center;vertical-align:middle}
+.tblQ td:first-child{text-align:left;font-weight:bold;font-size:13px}
+.tblQ tr:nth-child(even) td{background:#f0f4ff}
+.tblBub{width:20px;height:20px;border:2px solid #888;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;cursor:pointer;background:#fff;transition:all .13s;font-size:11.5px;font-weight:bold;color:#555}
+.tblBub:hover{border-color:#1a4fa0;background:#eef}
+.tblBub.sel{background:#1a4fa0;border-color:#1a4fa0;color:#fff}
+.tblBub.correct{background:#2a8a2a;border-color:#2a8a2a;color:#fff}
+.tblBub.wrong{background:#cc3333;border-color:#cc3333;color:#fff}
+.feedback{margin-top:14px;padding:12px 14px;border-radius:6px;font-size:13.5px;line-height:1.5;max-width:680px}
+.feedback.ok{background:#d4f5d4;border:1px solid #2a8a2a;color:#1a5c1a}
+.feedback.bad{background:#ffd8d8;border:1px solid #cc3333;color:#7a0000}
+#botNav{padding:9px 16px;background:#f2f2f4;border-top:1px solid #ddd;display:flex;justify-content:space-between;align-items:center;flex-shrink:0}
+.navBtn{background:#1a4fa0;color:#fff;border:none;padding:10px 24px;border-radius:5px;font-size:14px;font-weight:bold;min-height:44px;min-width:84px;transition:background .13s}
+.navBtn:hover{background:#153d80}
+.navBtn:active{background:#0e2d60}
+.navBtn:disabled{background:#aaa;cursor:default}
+#saveInfo{font-size:11.5px;color:#666;text-align:center}
+#toast{position:fixed;bottom:70px;left:50%;transform:translateX(-50%);background:rgba(0,0,0,.76);color:#fff;padding:8px 20px;border-radius:22px;font-size:14px;z-index:9999;opacity:0;pointer-events:none;white-space:nowrap;transition:opacity .25s;font-family:Arial,sans-serif}
+#notesOverlay{display:none;position:fixed;inset:0;z-index:800;background:rgba(0,0,0,.45)}
+#notesBox{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);background:#fff;border-radius:10px;width:min(500px,92vw);max-height:70vh;display:flex;flex-direction:column;box-shadow:0 8px 32px rgba(0,0,0,.35)}
+#notesHeader{background:#1a4fa0;color:#fff;padding:10px 16px;border-radius:10px 10px 0 0;display:flex;justify-content:space-between;align-items:center;font-weight:bold;font-size:15px}
+#notesClose{background:rgba(255,255,255,.2);border:none;color:#fff;border-radius:4px;padding:3px 10px;font-size:16px;cursor:pointer}
+#notesArea{flex:1;padding:14px;overflow-y:auto}
+#notesTxt{width:100%;height:180px;border:1.5px solid #ccc;border-radius:6px;padding:10px;font-family:Arial,sans-serif;font-size:14px;resize:vertical;outline:none}
+#notesFooter{padding:10px 14px;border-top:1px solid #eee;display:flex;justify-content:flex-end;gap:8px}
+.nBtn{padding:8px 18px;border:none;border-radius:5px;font-size:14px;font-weight:bold;cursor:pointer}
+#notesClear{background:#f0f0f0;color:#333}
+#notesSave{background:#1a4fa0;color:#fff}
+#lrBar{display:none;position:fixed;left:0;right:0;z-index:700;height:36px;background:rgba(255,220,0,.35);border-top:2px solid rgba(200,160,0,.5);border-bottom:2px solid rgba(200,160,0,.5);pointer-events:none}
+#lrControls{position:fixed;bottom:80px;left:50%;transform:translateX(-50%);z-index:710;background:#1a4fa0;border-radius:24px;padding:6px 14px;display:none;gap:10px;align-items:center;box-shadow:0 4px 16px rgba(0,0,0,.3)}
+.lrBtn{background:rgba(255,255,255,.2);border:none;color:#fff;border-radius:16px;padding:5px 14px;font-size:13px;font-weight:bold;cursor:pointer}
+#lrCloseBtn{background:rgba(255,100,100,.4)}
+@media(max-width:600px){#topBar .title{font-size:11px}.tbtn{font-size:9px;padding:2px 4px}#qBody{padding:14px 14px}.qPrompt,.choice{font-size:13.5px}}
+</style>
+</head>
+<body>
+
+<div id="topBar">
+  <span class="title">Grade 3 FAST Math &nbsp;|&nbsp; Unit 15 — Practice Test C</span>
+  <span class="user">GUEST, STUDENT &nbsp; GUEST SESSION</span>
+  <button id="helpBtn">?</button>
+  <button id="teacherBtn" onclick="teacherAccess()">Teacher</button>
+</div>
+
+<div id="toolbar">
+  <button class="tbtn nav-t" onclick="goBack()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><circle cx="12" cy="12" r="10"/><polyline points="12,8 8,12 12,16"/><line x1="16" y1="12" x2="8" y2="12"/></svg>Back</button>
+  <button class="tbtn nav-t" onclick="goNext()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><circle cx="12" cy="12" r="10"/><polyline points="12,8 16,12 12,16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>Next</button>
+  <button class="tbtn save-t" onclick="doSave()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>Save</button>
+  <button class="tbtn pause-t"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="10" y1="15" x2="10" y2="9"/><line x1="14" y1="15" x2="14" y2="9"/></svg>Pause</button>
+  <div id="tbSpacer"></div>
+  <button class="tbtn" onclick="openNotes()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4z"/></svg>Notes</button>
+  <button class="tbtn" onclick="toggleLR()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="9" x2="21" y2="9"/><line x1="3" y1="15" x2="21" y2="15"/></svg>Line Reader</button>
+  <button class="tbtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="8" y1="11" x2="14" y2="11"/></svg>Zoom Out</button>
+  <button class="tbtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg>Zoom In</button>
+</div>
+
+<div id="qStrip"></div>
+
+<div id="main">
+  <div id="qPanel">
+    <div id="qHeader"><span id="qNum">1</span><button id="qMenuBtn">&#x2630;</button></div>
+    <div id="qMeta"><span>GUEST, STUDENT</span><span id="saveTime"></span></div>
+    <div id="qBody"></div>
+    <div id="botNav">
+      <button class="navBtn" id="btnBack" onclick="goBack()">&#x25C4; Back</button>
+      <div id="saveInfo">Not yet saved</div>
+      <button class="navBtn" id="btnNext" onclick="goNext()">Next &#x25BA;</button>
+    </div>
+  </div>
+</div>
+
+<div id="notesOverlay" onclick="if(event.target===this)closeNotes()">
+  <div id="notesBox">
+    <div id="notesHeader"><span>📝 My Notes</span><button id="notesClose" onclick="closeNotes()">✕</button></div>
+    <div id="notesArea"><textarea id="notesTxt" placeholder="Type your notes here..."></textarea></div>
+    <div id="notesFooter"><button class="nBtn" id="notesClear" onclick="clearNotes()">Clear</button><button class="nBtn" id="notesSave" onclick="saveNotes()">Save &amp; Close</button></div>
+  </div>
+</div>
+<div id="lrBar"></div>
+<div id="lrControls">
+  <button class="lrBtn" onclick="lrMove(-30)">▲ Up</button>
+  <button class="lrBtn" onclick="lrMove(30)">▼ Down</button>
+  <button class="lrBtn" id="lrCloseBtn" onclick="toggleLR()">✕ Close</button>
+</div>
+<div id="toast"></div>
+
+<script>
+let cur=0,reviewMode=false,lastAttempt=null;
+const answers={};
+
+const SEG=[
+  {qs:[0,9],  label:`Q1–10 · MA.3.NSO.2.3`, color:`#1a4fa0`},
+  {qs:[10,19],label:`Q11–20 · MA.3.AR.1.1`,  color:`#5a3a00`},
+  {qs:[20,29],label:`Q21–30 · MA.3.FR.1.3`,  color:`#1a6a40`},
+  {qs:[30,39],label:`Q31–40 · MA.3.GR.1.2`,  color:`#6a1a6a`}
+];
+function segFor(i){return SEG.find(s=>i>=s.qs[0]&&i<=s.qs[1]);}
+
+const Qs=[
+
+// ══════════════════════════════════════════════
+// SEGMENT 1 · Q1–10 · MA.3.NSO.2.3
+// Brand new: aquarium, post office, ice cream,
+// recycling drive, marching band
+// ══════════════════════════════════════════════
+
+{id:1,type:`mc`,
+ prompt:`An aquarium has 6 fish tanks. Each tank holds 50 fish. How many fish are in the aquarium in all?`,
+ choices:[`56`,`300`,`3,000`,`56`],correct:1,
+ explain:`6 × 50 = 6 × 5 × 10 = 30 × 10 = 300 fish.`},
+
+{id:2,type:`mc`,
+ prompt:`A post office receives 9 mail trucks every day. Each truck carries 400 packages. How many packages arrive each day?`,
+ choices:[`409`,`360`,`3,600`,`36,000`],correct:2,
+ explain:`9 × 400 = 9 × 4 × 100 = 36 × 100 = 3,600 packages.`},
+
+{id:3,type:`mc`,
+ prompt:`An ice cream shop sells cones in trays of 20. On Saturday the shop used 7 trays. Which equation shows the total number of cones sold?`,
+ choices:[`7 + 20 = 27`,`7 × 2 = 14`,`7 × 20 = 140`,`7 × 20 = 1,400`],correct:2,
+ explain:`7 × 20 = 7 × 2 × 10 = 14 × 10 = 140 cones.`},
+
+{id:4,type:`mc`,
+ prompt:`A recycling drive collected aluminum cans. Each of 8 neighborhoods collected 600 cans. What was the total number of cans collected?`,
+ choices:[`608`,`480`,`4,800`,`48,000`],correct:2,
+ explain:`8 × 600 = 8 × 6 × 100 = 48 × 100 = 4,800 cans.`},
+
+{id:5,type:`mc`,
+ prompt:`A marching band has 5 rows of musicians. Each row has 80 musicians. How many musicians are in the band?`,
+ choices:[`85`,`40`,`400`,`4,000`],correct:2,
+ explain:`5 × 80 = 5 × 8 × 10 = 40 × 10 = 400 musicians.`},
+
+{id:6,type:`mc`,
+ prompt:`Which number makes this equation true? &nbsp; 3 × ___ = 2,700`,
+ choices:[`9`,`90`,`900`,`9,000`],correct:2,
+ explain:`3 × 900 = 3 × 9 × 100 = 27 × 100 = 2,700. The missing number is 900.`},
+
+{id:7,type:`partAB`,
+ partA:{
+   prompt:`Part A — A theater has 7 rows of seats. Each row has 300 seats. Which expression gives the total seats?`,
+   choices:[`7 + 300`,`7 × 30`,`7 × 300`,`700 × 3`],correct:2},
+ partB:{
+   prompt:`Part B — What is the total number of seats in the theater?`,
+   choices:[`210`,`2,100`,`21,000`,`307`],correct:1},
+ explain:`Part A: 7 × 300 is the correct expression. Part B: 7 × 300 = 7 × 3 × 100 = 21 × 100 = 2,100 seats.`},
+
+{id:8,type:`table`,
+ prompt:`Select the correct product for each expression.`,
+ rows:[
+   {label:`2 × 90`,  cols:[`18`,`180`,`1,800`], correct:1},
+   {label:`5 × 700`, cols:[`350`,`3,500`,`35,000`], correct:1},
+   {label:`6 × 800`, cols:[`480`,`4,800`,`48,000`], correct:1}
+ ],
+ explain:`2 × 90 = 180. &nbsp; 5 × 700 = 3,500. &nbsp; 6 × 800 = 4,800.`},
+
+{id:9,type:`multi`,
+ prompt:`Select <strong>two</strong> expressions that equal <strong>4,500</strong>.`,
+ choices:[`9 × 500`,`5 × 900`,`6 × 700`,`3 × 150`,`7 × 600`],correct:[0,1],
+ explain:`9 × 500 = 4,500 ✓. &nbsp; 5 × 900 = 4,500 ✓. Check: 6 × 700 = 4,200, 3 × 150 = 450, 7 × 600 = 4,200.`},
+
+{id:10,type:`mc`,
+ prompt:`Rosa says: "4 times 200 equals 80." Is Rosa correct? What is the actual product?`,
+ choices:[`Yes — 4 × 200 = 80`,
+           `No — 4 × 200 = 800`,
+           `No — 4 × 200 = 8,000`,
+           `Yes — 4 × 200 = 80 because 4 × 2 = 8`],correct:1,
+ explain:`Rosa is incorrect. 4 × 200 = 4 × 2 × 100 = 8 × 100 = 800. She forgot to attach the two zeros from 200.`},
+
+// ══════════════════════════════════════════════
+// SEGMENT 2 · Q11–20 · MA.3.AR.1.1
+// Brand new: swimming pool lanes, egg cartons,
+// mural tiles, tree seedlings, book shelves
+// ══════════════════════════════════════════════
+
+{id:11,type:`mc`,
+ prompt:`A swimming pool has 3 lanes. Each lane fits 27 swimmers for a race event. Which expression uses the distributive property to find the total swimmers?`,
+ choices:[`3 + 27`,`(3 × 20) + (3 × 7)`,`(3 + 20) × (3 + 7)`,`3 × 2 × 7`],correct:1,
+ explain:`3 × 27 = 3 × (20 + 7) = (3 × 20) + (3 × 7) = 60 + 21 = 81.`},
+
+{id:12,type:`mc`,
+ prompt:`What is 3 × 27?`,
+ choices:[`71`,`78`,`81`,`91`],correct:2,
+ explain:`3 × 27 = (3 × 20) + (3 × 7) = 60 + 21 = 81.`},
+
+{id:13,type:`mc`,
+ prompt:`An egg carton holds 12 eggs. A grocery store received 8 cartons. How many eggs did the store receive?`,
+ choices:[`86`,`92`,`96`,`106`],correct:2,
+ explain:`8 × 12 = (8 × 10) + (8 × 2) = 80 + 16 = 96 eggs.`},
+
+{id:14,type:`mc`,
+ prompt:`A student sets up this equation: (4 × ___) + (4 × 6) = 4 × 56. What is the missing number?`,
+ choices:[`5`,`6`,`50`,`56`],correct:2,
+ explain:`4 × 56 = 4 × (50 + 6) = (4 × 50) + (4 × 6). The missing number is 50.`},
+
+{id:15,type:`mc`,
+ prompt:`An artist paints a mural using 9 sections. Each section has 44 tiles. What is the total number of tiles?`,
+ choices:[`369`,`386`,`396`,`406`],correct:2,
+ explain:`9 × 44 = (9 × 40) + (9 × 4) = 360 + 36 = 396 tiles.`},
+
+{id:16,type:`mc`,
+ prompt:`Which equation shows the distributive property for 5 × 62?`,
+ choices:[`5 × 62 = (5 × 6) + 2`,
+           `5 × 62 = (5 × 60) + (5 × 2)`,
+           `5 × 62 = 5 + 60 + 2`,
+           `5 × 62 = (5 × 6) × (5 × 2)`],correct:1,
+ explain:`5 × 62 = 5 × (60 + 2) = (5 × 60) + (5 × 2) = 300 + 10 = 310.`},
+
+{id:17,type:`partAB`,
+ partA:{
+   prompt:`Part A — A park planted 7 rows of tree seedlings. Each row has 53 seedlings. Which expression uses the distributive property?`,
+   choices:[`(7 × 50) + (7 × 3)`,`(7 + 50) + (7 + 3)`,`7 × 5 × 3`,`7 + 53`],correct:0},
+ partB:{
+   prompt:`Part B — How many tree seedlings were planted in all?`,
+   choices:[`351`,`361`,`371`,`381`],correct:2},
+ explain:`Part A: 7 × 53 = (7 × 50) + (7 × 3). Part B: 350 + 21 = 371 seedlings.`},
+
+{id:18,type:`multi`,
+ prompt:`Select <strong>two</strong> expressions that equal <strong>6 × 45</strong>.`,
+ choices:[`(6 × 40) + (6 × 5)`,
+           `(6 × 40) + 5`,
+           `(6 × 50) − (6 × 5)`,
+           `6 + 45`,
+           `(6 × 44) + (6 × 1)`],correct:[0,2],
+ explain:`A: (6×40)+(6×5) = 240+30 = 270 ✓. &nbsp; C: (6×50)−(6×5) = 300−30 = 270 ✓. Both equal 6 × 45 = 270.`},
+
+{id:19,type:`table`,
+ prompt:`Use the distributive property to select the correct product.`,
+ rows:[
+   {label:`4 × 28`,cols:[`102`,`112`,`122`],correct:1},
+   {label:`6 × 37`,cols:[`212`,`222`,`232`],correct:1},
+   {label:`8 × 51`,cols:[`398`,`408`,`418`],correct:1}
+ ],
+ explain:`4 × 28 = (4×20)+(4×8) = 80+32 = 112. &nbsp; 6 × 37 = (6×30)+(6×7) = 180+42 = 222. &nbsp; 8 × 51 = (8×50)+(8×1) = 400+8 = 408.`},
+
+{id:20,type:`mc`,
+ prompt:`A bookshelf has 9 shelves. Each shelf holds 33 books. Keisha says the total is (9 × 30) + (9 × 3). What is the total number of books?`,
+ choices:[`267`,`287`,`297`,`307`],correct:2,
+ explain:`(9 × 30) + (9 × 3) = 270 + 27 = 297 books.`},
+
+// ══════════════════════════════════════════════
+// SEGMENT 3 · Q21–30 · MA.3.FR.1.3
+// Brand new: fishing line, granola bars,
+// science experiment, paper folding, field day
+// ══════════════════════════════════════════════
+
+{id:21,type:`mc`,
+ prompt:`A fishing line is divided into 5 equal sections. Carlos used 13 sections of line on his fishing trip. Which fraction represents the total lengths of fishing line Carlos used?`,
+ choices:[`<span class="frac"><span class="num">5</span><span class="bar"></span><span class="den">13</span></span>`,
+           `<span class="frac"><span class="num">8</span><span class="bar"></span><span class="den">5</span></span>`,
+           `<span class="frac"><span class="num">13</span><span class="bar"></span><span class="den">5</span></span>`,
+           `<span class="frac"><span class="num">1</span><span class="bar"></span><span class="den">5</span></span>`],correct:2,
+ explain:`13 sections used out of 5 sections per length = 13/5. Since 13 > 5, this fraction is greater than 1.`},
+
+{id:22,type:`mc`,
+ prompt:`A granola bar is cut into 8 equal pieces. Tomas ate 5 pieces. Which fraction shows how much of one granola bar Tomas ate?`,
+ choices:[`<span class="frac"><span class="num">8</span><span class="bar"></span><span class="den">5</span></span>`,
+           `<span class="frac"><span class="num">5</span><span class="bar"></span><span class="den">8</span></span>`,
+           `<span class="frac"><span class="num">3</span><span class="bar"></span><span class="den">8</span></span>`,
+           `<span class="frac"><span class="num">5</span><span class="bar"></span><span class="den">5</span></span>`],correct:1,
+ explain:`5 pieces eaten out of 8 pieces total = 5/8. Since 5 < 8, Tomas ate less than one whole granola bar.`},
+
+{id:23,type:`mc`,
+ prompt:`In a science experiment, students pour liquid into containers. Each container holds 6 equal units of liquid. A group poured 17 units. Which fraction shows how many containers they filled?`,
+ choices:[`<span class="frac"><span class="num">6</span><span class="bar"></span><span class="den">17</span></span>`,
+           `<span class="frac"><span class="num">11</span><span class="bar"></span><span class="den">6</span></span>`,
+           `<span class="frac"><span class="num">17</span><span class="bar"></span><span class="den">6</span></span>`,
+           `<span class="frac"><span class="num">6</span><span class="bar"></span><span class="den">6</span></span>`],correct:2,
+ explain:`17 units poured ÷ 6 units per container = 17/6. The numerator 17 is greater than the denominator 6, so this fraction is greater than 1.`},
+
+{id:24,type:`mc`,
+ prompt:`What is the word form of <span class="frac"><span class="num">15</span><span class="bar"></span><span class="den">7</span></span>?`,
+ choices:[`seven fifteenths`,`fifteen sevenths`,`seven and fifteen`,`fifteen halves`],correct:1,
+ explain:`15/7 is read as "fifteen sevenths." The numerator 15 comes first, then the denominator 7.`},
+
+{id:25,type:`mc`,
+ prompt:`A student folds a piece of paper into 4 equal sections. She shades 4 sections. Her partner says the fraction shaded is greater than 1. Is the partner correct?`,
+ choices:[`Yes — because 4 is a large number`,
+           `No — <span class="frac"><span class="num">4</span><span class="bar"></span><span class="den">4</span></span> equals exactly 1, not greater than 1`,
+           `Yes — because both numbers are the same`,
+           `No — <span class="frac"><span class="num">4</span><span class="bar"></span><span class="den">4</span></span> is less than 1`],correct:1,
+ explain:`The partner is incorrect. 4/4 = 1 exactly. When the numerator equals the denominator, the fraction equals 1 whole — not greater than 1.`},
+
+{id:26,type:`mc`,
+ prompt:`Which fraction is between <span class="frac"><span class="num">1</span><span class="bar"></span><span class="den">2</span></span> and 1?`,
+ choices:[`<span class="frac"><span class="num">3</span><span class="bar"></span><span class="den">2</span></span>`,
+           `<span class="frac"><span class="num">1</span><span class="bar"></span><span class="den">4</span></span>`,
+           `<span class="frac"><span class="num">3</span><span class="bar"></span><span class="den">4</span></span>`,
+           `<span class="frac"><span class="num">5</span><span class="bar"></span><span class="den">4</span></span>`],correct:2,
+ explain:`3/4 = 0.75, which is between 1/2 (0.5) and 1. The fraction 3/2 is greater than 1; 1/4 is less than 1/2; 5/4 is greater than 1.`},
+
+{id:27,type:`partAB`,
+ partA:{
+   prompt:`Part A — During field day, students ran laps. Each full lap was divided into 3 equal parts. Deja ran 11 parts. Which fraction shows how many laps Deja ran?`,
+   choices:[`<span class="frac"><span class="num">3</span><span class="bar"></span><span class="den">11</span></span>`,
+             `<span class="frac"><span class="num">8</span><span class="bar"></span><span class="den">3</span></span>`,
+             `<span class="frac"><span class="num">11</span><span class="bar"></span><span class="den">3</span></span>`,
+             `<span class="frac"><span class="num">1</span><span class="bar"></span><span class="den">3</span></span>`],correct:2},
+ partB:{
+   prompt:`Part B — Is this fraction greater than, equal to, or less than 1? How do you know?`,
+   choices:[`Less than 1 — because 3 is less than 11`,
+             `Equal to 1 — because Deja finished some laps`,
+             `Greater than 1 — because the numerator 11 is greater than the denominator 3`,
+             `Less than 1 — because the denominator is only 3`],correct:2},
+ explain:`Part A: 11 parts run ÷ 3 parts per lap = 11/3. Part B: 11 > 3, so 11/3 > 1. Deja ran more than 1 full lap.`},
+
+{id:28,type:`table`,
+ prompt:`Classify each fraction correctly.`,
+ rows:[
+   {label:`5/5`,  cols:[`Less than 1`,`Equal to 1`,`Greater than 1`],correct:1},
+   {label:`13/10`,cols:[`Less than 1`,`Equal to 1`,`Greater than 1`],correct:2},
+   {label:`1/6`,  cols:[`Less than 1`,`Equal to 1`,`Greater than 1`],correct:0},
+   {label:`3/3`,  cols:[`Less than 1`,`Equal to 1`,`Greater than 1`],correct:1}
+ ],
+ explain:`5/5 = 1. &nbsp; 13/10 > 1 (13 > 10). &nbsp; 1/6 < 1 (1 < 6). &nbsp; 3/3 = 1.`},
+
+{id:29,type:`multi`,
+ prompt:`Select <strong>two</strong> fractions that are <strong>less than 1</strong>.`,
+ choices:[`<span class="frac"><span class="num">7</span><span class="bar"></span><span class="den">4</span></span>`,
+           `<span class="frac"><span class="num">3</span><span class="bar"></span><span class="den">10</span></span>`,
+           `<span class="frac"><span class="num">9</span><span class="bar"></span><span class="den">9</span></span>`,
+           `<span class="frac"><span class="num">2</span><span class="bar"></span><span class="den">8</span></span>`,
+           `<span class="frac"><span class="num">11</span><span class="bar"></span><span class="den">5</span></span>`],correct:[1,3],
+ explain:`3/10 < 1 because 3 < 10 ✓. &nbsp; 2/8 < 1 because 2 < 8 ✓. The others are ≥ 1.`},
+
+{id:30,type:`mc`,
+ prompt:`Marcus wrote <span class="frac"><span class="num">9</span><span class="bar"></span><span class="den">4</span></span> on his paper. His teacher asked him to write the word form. Which answer is correct?`,
+ choices:[`four ninths`,`nine halves`,`nine fourths`,`four and nine tenths`],correct:2,
+ explain:`9/4 is read as "nine fourths." The numerator 9 is stated first as a cardinal number, then the denominator 4 as an ordinal word (fourths).`},
+
+// ══════════════════════════════════════════════
+// SEGMENT 4 · Q31–40 · MA.3.GR.1.2
+// Brand new: kite festival, quilt patterns,
+// playground design, road signs, mosaic art
+// ══════════════════════════════════════════════
+
+{id:31,type:`mc`,
+ prompt:`At a kite festival, Zara flies a kite shaped like a quadrilateral with 4 equal sides and no right angles. What is the name of this shape?`,
+ choices:[`Square`,`Rectangle`,`Rhombus`,`Trapezoid`],correct:2,
+ explain:`A rhombus has 4 equal sides but its angles are not required to be right angles. A square also has 4 equal sides but must have right angles.`},
+
+{id:32,type:`mc`,
+ prompt:`A quilt pattern uses a shape that has exactly 4 sides. Two sides are parallel and two sides are not parallel. What shape is used in the quilt?`,
+ choices:[`Parallelogram`,`Rhombus`,`Trapezoid`,`Rectangle`],correct:2,
+ explain:`A trapezoid has exactly one pair of parallel sides and one pair of non-parallel sides. Parallelograms, rhombuses, and rectangles all have two pairs of parallel sides.`},
+
+{id:33,type:`mc`,
+ prompt:`A playground designer draws a shape with 4 sides where all angles are right angles and opposite sides are equal but not all sides are the same length. What shape did she draw?`,
+ choices:[`Square`,`Rectangle`,`Rhombus`,`Trapezoid`],correct:1,
+ explain:`A rectangle has 4 right angles and opposite sides equal, but adjacent sides can differ in length. A square requires all 4 sides to be equal.`},
+
+{id:34,type:`mc`,
+ prompt:`A road sign has 4 sides and 4 angles. All 4 sides are equal and all 4 angles are right angles. What shape is the sign?`,
+ choices:[`Rectangle`,`Rhombus`,`Trapezoid`,`Square`],correct:3,
+ explain:`A square has 4 equal sides AND 4 right angles. This is the most specific name for a shape with both of those properties.`},
+
+{id:35,type:`mc`,
+ prompt:`Mrs. Chen asks her class: "Is a square also a rectangle?" Which answer is correct?`,
+ choices:[`No — a square has more sides than a rectangle`,
+           `No — rectangles must have unequal sides`,
+           `Yes — a square has 4 right angles and 4 sides, so it is a special rectangle`,
+           `Yes — but only rectangles with equal sides count as squares`],correct:2,
+ explain:`A square meets every requirement of a rectangle (4 sides, 4 right angles, opposite sides equal) and additionally has all 4 sides equal. So a square is always a rectangle, but not every rectangle is a square.`},
+
+{id:36,type:`mc`,
+ prompt:`A mosaic artist makes tiles. She needs shapes that have <strong>two pairs of parallel sides</strong>. Which shape should she <strong>not</strong> use?`,
+ choices:[`Rectangle`,`Rhombus`,`Square`,`Trapezoid`],correct:3,
+ explain:`A trapezoid has only ONE pair of parallel sides. Rectangles, rhombuses, and squares all have two pairs of parallel sides.`},
+
+{id:37,type:`table`,
+ prompt:`For each shape, select whether it is a quadrilateral or not.`,
+ rows:[
+   {label:`Trapezoid`,cols:[`Quadrilateral`,`Not a Quadrilateral`],correct:0},
+   {label:`Hexagon`,  cols:[`Quadrilateral`,`Not a Quadrilateral`],correct:1},
+   {label:`Rectangle`,cols:[`Quadrilateral`,`Not a Quadrilateral`],correct:0},
+   {label:`Triangle`, cols:[`Quadrilateral`,`Not a Quadrilateral`],correct:1}
+ ],
+ explain:`Trapezoid: 4 sides → quadrilateral ✓. Hexagon: 6 sides → not a quadrilateral. Rectangle: 4 sides → quadrilateral ✓. Triangle: 3 sides → not a quadrilateral.`},
+
+{id:38,type:`multi`,
+ prompt:`Select <strong>two</strong> shapes that are <strong>parallelograms</strong> (two pairs of parallel sides).`,
+ choices:[`Trapezoid`,`Square`,`Triangle`,`Rhombus`,`Pentagon`],correct:[1,3],
+ explain:`Square: 2 pairs of parallel sides → parallelogram ✓. &nbsp; Rhombus: 2 pairs of parallel sides → parallelogram ✓. A trapezoid has only 1 pair; triangles and pentagons have none.`},
+
+{id:39,type:`partAB`,
+ partA:{
+   prompt:`Part A — Omar draws a quadrilateral. It has 2 pairs of parallel sides, all 4 sides are equal, and its angles are NOT right angles. What shape did Omar draw?`,
+   choices:[`Square`,`Rectangle`,`Trapezoid`,`Rhombus`],correct:3},
+ partB:{
+   prompt:`Part B — Omar's friend draws a shape with the same 4 equal sides but changes the angles so they ARE all right angles. What shape does the friend draw?`,
+   choices:[`Trapezoid`,`Rhombus`,`Square`,`Pentagon`],correct:2},
+ explain:`Part A: 4 equal sides, 2 pairs of parallel sides, no right angles = Rhombus. Part B: Same shape but with right angles = Square. A square is a rhombus with 4 right angles.`},
+
+{id:40,type:`table`,
+ prompt:`Match each shape to its most accurate description.`,
+ rows:[
+   {label:`Rectangle`, cols:[`4 equal sides, no right angles`,`4 right angles, opposite sides equal`,`1 pair of parallel sides`],correct:1},
+   {label:`Rhombus`,   cols:[`4 equal sides, no right angles`,`4 right angles, opposite sides equal`,`1 pair of parallel sides`],correct:0},
+   {label:`Trapezoid`, cols:[`4 equal sides, no right angles`,`4 right angles, opposite sides equal`,`1 pair of parallel sides`],correct:2}
+ ],
+ explain:`Rectangle: 4 right angles, opposite sides equal (but not all equal). Rhombus: 4 equal sides, angles not necessarily 90°. Trapezoid: exactly 1 pair of parallel sides.`}
+];
+
+// ─── ENGINE (identical to Test A) ───
+function isCorrect(q,a){
+  if(a===undefined||a===null)return false;
+  if(q.type==='mc')return a===q.correct;
+  if(q.type==='multi')return[...a].sort().join()===[...q.correct].sort().join();
+  if(q.type==='partAB')return a&&a.a===q.partA.correct&&a.b===q.partB.correct;
+  if(q.type==='table')return q.rows.every((_,ri)=>a&&a[ri]===q.rows[ri].correct);
+  return false;
+}
+function isAnswered(q,a){
+  if(a===undefined||a===null)return false;
+  if(q.type==='multi')return a.length>0;
+  if(q.type==='partAB')return a&&a.a!==undefined&&a.b!==undefined;
+  if(q.type==='table')return Object.keys(a).length>=q.rows.length;
+  return true;
+}
+function renderStrip(){
+  const s=document.getElementById('qStrip');s.innerHTML='';
+  if(reviewMode)return;
+  Qs.forEach((q,i)=>{
+    if(i>0&&i%10===0){const sep=document.createElement('span');sep.className='qDotSep';sep.textContent='|';s.appendChild(sep);}
+    const d=document.createElement('button');
+    d.className='qDot'+(i===cur?' active':'')+(isAnswered(q,answers[i])?' done':'');
+    d.textContent=q.id;d.onclick=()=>{cur=i;render();};s.appendChild(d);
+  });
+}
+function renderQ(q,idx,rev){
+  const a=answers[idx];let h='';
+  if(q.type==='mc'){
+    if(q.excerpt)h+=`<div class="qExcerpt">${q.excerpt}</div>`;
+    h+=`<div class="qPrompt">${q.prompt}</div><div class="choices">`;
+    q.choices.forEach((c,i)=>{
+      let cl=a===i?' sel':'';
+      if(rev)cl=i===q.correct?' correct':(a===i?' wrong':'');
+      h+=`<button class="choice${cl}" ${rev?'disabled':''} onclick="pMC(${idx},${i})"><div class="cMarker"></div><span class="cLetter">&#${9398+i};</span><span>${c}</span></button>`;
+    });
+    h+='</div>';
+  } else if(q.type==='multi'){
+    h+=`<div class="qPrompt">${q.prompt}</div><div class="choices">`;
+    const sel=a||[];
+    q.choices.forEach((c,i)=>{
+      let cl=sel.includes(i)?' sel':'';
+      if(rev)cl=q.correct.includes(i)?' correct':(sel.includes(i)?' wrong':'');
+      h+=`<button class="choice${cl}" ${rev?'disabled':''} onclick="pMulti(${idx},${i})"><div class="cMarker chk"></div><span>${c}</span></button>`;
+    });
+    h+='</div>';
+  } else if(q.type==='partAB'){
+    h+=`<div class="partLabel">Part A</div><div class="qPrompt">${q.partA.prompt}</div><div class="choices">`;
+    q.partA.choices.forEach((c,i)=>{
+      let cl=(a&&a.a===i)?' sel':'';
+      if(rev)cl=i===q.partA.correct?' correct':((a&&a.a===i)?' wrong':'');
+      h+=`<button class="choice${cl}" ${rev?'disabled':''} onclick="pA(${idx},${i})"><div class="cMarker"></div><span class="cLetter">&#${9398+i};</span><span>${c}</span></button>`;
+    });
+    h+=`</div><hr class="partDivider"><div class="partLabel">Part B</div><div class="qPrompt">${q.partB.prompt}</div><div class="choices">`;
+    q.partB.choices.forEach((c,i)=>{
+      let cl=(a&&a.b===i)?' sel':'';
+      if(rev)cl=i===q.partB.correct?' correct':((a&&a.b===i)?' wrong':'');
+      h+=`<button class="choice${cl}" ${rev?'disabled':''} onclick="pB(${idx},${i})"><div class="cMarker"></div><span class="cLetter">&#${9398+i};</span><span>${c}</span></button>`;
+    });
+    h+='</div>';
+  } else if(q.type==='table'){
+    h+=`<div class="qPrompt">${q.prompt}</div><table class="tblQ"><thead><tr><th></th>`;
+    q.rows[0].cols.forEach(c=>{h+=`<th>${c}</th>`;});
+    h+=`</tr></thead><tbody>`;
+    const tA=a||{};
+    q.rows.forEach((row,ri)=>{
+      h+=`<tr><td>${row.label}</td>`;
+      row.cols.forEach((c,ci)=>{
+        const sel=tA[ri]===ci;let cl=sel?' sel':'';
+        if(rev)cl=ci===row.correct?' correct':(sel?' wrong':'');
+        const clk=rev?'':` onclick="pTbl(${idx},${ri},${ci})"`;
+        h+=`<td><span class="tblBub${cl}"${clk}>${String.fromCharCode(65+ri*row.cols.length+ci)}</span></td>`;
+      });
+      h+='</tr>';
+    });
+    h+='</tbody></table>';
+  }
+  if(rev){
+    const ok=isCorrect(q,a);
+    h+=`<div class="feedback ${ok?'ok':'bad'}">${ok?'<strong>✓ Correct!</strong> ':'<strong>✗ Not quite.</strong> '}${q.explain}</div>`;
+  }
+  return h;
+}
+function render(){
+  if(reviewMode){renderReview(lastAttempt);return;}
+  renderStrip();
+  const q=Qs[cur];
+  document.getElementById('qNum').textContent=q.id;
+  document.getElementById('btnBack').disabled=cur===0;
+  const isLast=cur===Qs.length-1;
+  const btn=document.getElementById('btnNext');
+  btn.textContent=isLast?'Submit ▶':'Next ▶';
+  btn.style.background=isLast?'#2a8a2a':'';
+  const body=document.getElementById('qBody');
+  body.innerHTML=renderQ(q,cur,false);body.scrollTop=0;
+}
+const TEST_ID=document.title.replace(/[^a-zA-Z0-9]/g,'_');
+const LOG_KEY='fastmath_log_'+TEST_ID;
+const TEACHER_PIN='1234';
+function teacherAccess(){
+  const pin=prompt('Enter teacher PIN to view attempt log:');
+  if(pin===null)return;
+  if(pin===TEACHER_PIN){showTeacherLog();}else{alert('Incorrect PIN. Please try again.');}
+}
+(function(){
+  const k={};
+  document.addEventListener('keydown',e=>{k[e.key.toUpperCase()]=true;if(k['T']&&k['E']&&k['A'])teacherAccess();});
+  document.addEventListener('keyup',e=>{delete k[e.key.toUpperCase()];});
+})();
+function getLog(){try{return JSON.parse(localStorage.getItem(LOG_KEY)||'[]');}catch(e){return[];}}
+function saveAttempt(score,total,snap){
+  const log=getLog();
+  const a={attemptNum:log.length+1,timestamp:new Date().toISOString(),score,total,pct:Math.round(score/total*100),answers:snap};
+  log.push(a);localStorage.setItem(LOG_KEY,JSON.stringify(log));return a;
+}
+function showTeacherLog(){
+  const log=getLog();
+  if(!log.length){alert('No attempts recorded yet for:\n'+TEST_ID);return;}
+  let msg='=== ATTEMPT LOG ===\n'+TEST_ID+'\n\n';
+  log.forEach(a=>{
+    const d=new Date(a.timestamp);
+    msg+=`Attempt #${a.attemptNum}  |  ${d.toLocaleDateString()} ${d.toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})}  |  Score: ${a.score}/${a.total} (${a.pct}%)\n`;
+    SEG.forEach(s=>{
+      const idxs=Qs.map((q,i)=>i).filter(i=>i>=s.qs[0]&&i<=s.qs[1]);
+      const sc=idxs.filter(i=>isCorrect(Qs[i],a.answers[i])).length;
+      msg+=`  ${s.label}: ${sc}/${idxs.length}\n`;
+    });
+    msg+='\n';
+  });
+  if(log.length>1){
+    msg+='⚠️  '+log.length+' attempts submitted.';
+    if(log[log.length-1].score>log[0].score)
+      msg+='\n⚠️  Score improved: '+log[0].score+'/'+log[0].total+' → '+log[log.length-1].score+'/'+log[log.length-1].total;
+  }
+  alert(msg);
+}
+function renderReview(attemptData){
+  document.getElementById('qStrip').innerHTML='';
+  document.getElementById('qNum').textContent='✓';
+  const bB=document.getElementById('btnBack'),bN=document.getElementById('btnNext');
+  bB.textContent='🔒 Locked';bB.disabled=true;bB.style.background='#aaa';
+  bN.textContent='Done ✓';bN.style.background='#555';
+  bN.onclick=()=>showToast('Test complete. Your answers have been recorded.');
+  const{score,total,pct,attemptNum,timestamp}=attemptData;
+  const band=pct>=80?'#90ff90':pct>=60?'#ffd080':'#ff9090';
+  const segScores=SEG.map(s=>{
+    const idxs=Qs.map((q,i)=>i).filter(i=>i>=s.qs[0]&&i<=s.qs[1]);
+    const sc=idxs.filter(i=>isCorrect(Qs[i],answers[i])).length;
+    return{label:s.label,sc,tot:idxs.length,color:s.color};
+  });
+  let h=`<div style="background:#1a4fa0;color:#fff;padding:16px;border-radius:8px;margin-bottom:20px;">
+    <div style="font-size:17px;font-weight:bold;margin-bottom:4px;">Test Complete — Attempt #${attemptNum}</div>
+    <div style="font-size:32px;font-weight:bold;color:${band}">${score} / ${total}</div>
+    <div style="font-size:13px;margin-top:3px;opacity:.9;">${pct}% correct &nbsp;·&nbsp; ${new Date(timestamp).toLocaleDateString()} ${new Date(timestamp).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})}</div>
+    <div style="margin-top:12px;display:flex;gap:8px;flex-wrap:wrap;">`;
+  segScores.forEach(ss=>{
+    const c=ss.sc===ss.tot?'#90ff90':ss.sc>=ss.tot/2?'#ffd080':'#ff9090';
+    h+=`<div style="background:rgba(255,255,255,.15);border-radius:6px;padding:6px 10px;font-size:12px;"><div style="font-weight:bold;color:${c}">${ss.sc}/${ss.tot}</div><div style="opacity:.8;font-size:10.5px;">${ss.label}</div></div>`;
+  });
+  h+=`</div><div style="margin-top:10px;padding:8px 12px;background:rgba(255,255,255,.15);border-radius:6px;font-size:12.5px;line-height:1.6;">
+    🔒 Your answers are now locked and cannot be changed.<br>
+    ${attemptNum>1?`<span style="color:#ffd080;font-weight:bold;">⚠️ This is attempt #${attemptNum}. Your teacher can see all attempts.</span>`:'Your teacher has a record of this submission.'}
+  </div></div>
+  <div style="padding:8px 12px;background:#fff8e1;border:1px solid #f0c040;border-radius:6px;margin-bottom:16px;font-size:13px;color:#7a5800;">
+    📖 <strong>Review below</strong> — read the explanations for any questions you missed.
+  </div>`;
+  let lastSeg=-1;
+  Qs.forEach((q,i)=>{
+    const si=SEG.findIndex(s=>i>=s.qs[0]&&i<=s.qs[1]);
+    if(si!==lastSeg){
+      h+=`<div style="margin:18px 0 10px;padding:8px 14px;background:${SEG[si].color};color:#fff;border-radius:6px;font-weight:bold;font-size:13px;">${SEG[si].label}</div>`;
+      lastSeg=si;
+    }
+    const ok=isCorrect(q,answers[i]);
+    const tl=q.type==='mc'?'Multiple Choice':q.type==='multi'?'Select Two':q.type==='partAB'?'Part A / Part B':'Bubble Table';
+    h+=`<div style="margin-bottom:22px;padding:13px;border:2px solid ${ok?'#2a8a2a':'#cc3333'};border-radius:8px;background:${ok?'#f6fff6':'#fff6f6'}">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;flex-wrap:wrap;">
+        <span style="background:${ok?'#2a8a2a':'#cc3333'};color:#fff;font-weight:bold;font-size:13px;padding:3px 10px;border-radius:20px;">Q${q.id} — ${ok?'✓ Correct':'✗ Incorrect'}</span>
+        <span style="font-size:12px;color:#555;font-style:italic;">${tl}</span>
+      </div>${renderQ(q,i,true)}</div>`;
+  });
+  const body=document.getElementById('qBody');
+  body.innerHTML=h;body.scrollTop=0;stamp();
+}
+function pMC(idx,i){answers[idx]=i;if(!reviewMode)render();}
+function pA(idx,i){if(!answers[idx])answers[idx]={};answers[idx].a=i;if(!reviewMode)render();}
+function pB(idx,i){if(!answers[idx])answers[idx]={};answers[idx].b=i;if(!reviewMode)render();}
+function pMulti(idx,i){if(!answers[idx])answers[idx]=[];const p=answers[idx].indexOf(i);p===-1?answers[idx].push(i):answers[idx].splice(p,1);if(!reviewMode)render();}
+function pTbl(idx,ri,ci){if(!answers[idx])answers[idx]={};answers[idx][ri]=ci;if(!reviewMode)render();}
+function goBack(){if(reviewMode){showToast('🔒 Test submitted — answers are locked.');return;}if(cur>0){cur--;render();}}
+function goNext(){
+  if(reviewMode){showToast('🔒 Test complete. Answers are locked.');return;}
+  if(cur<Qs.length-1){cur++;render();return;}
+  const miss=Qs.filter((q,i)=>!isAnswered(q,answers[i])).length;
+  if(miss>0){showToast(`${miss} question(s) not yet answered.`);return;}
+  if(!confirm('Submit your test? Your answers will be LOCKED and cannot be changed after this.'))return;
+  reviewMode=true;
+  const score=Qs.filter((q,i)=>isCorrect(q,answers[i])).length;
+  lastAttempt=saveAttempt(score,Qs.length,JSON.parse(JSON.stringify(answers)));
+  renderReview(lastAttempt);
+}
+function stamp(){
+  const t=new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
+  document.getElementById('saveTime').textContent='Last Saved: '+t;
+  document.getElementById('saveInfo').textContent='Last saved: '+t;
+}
+function doSave(){stamp();showToast('Saved!');}
+function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.style.opacity='1';clearTimeout(t._t);t._t=setTimeout(()=>t.style.opacity='0',2600);}
+const NOTES_KEY='fastmath_notes_'+TEST_ID;
+function openNotes(){document.getElementById('notesTxt').value=localStorage.getItem(NOTES_KEY)||'';document.getElementById('notesOverlay').style.display='block';}
+function closeNotes(){document.getElementById('notesOverlay').style.display='none';}
+function saveNotes(){localStorage.setItem(NOTES_KEY,document.getElementById('notesTxt').value);closeNotes();}
+function clearNotes(){document.getElementById('notesTxt').value='';}
+let lrActive=false,lrY=200;
+function toggleLR(){
+  lrActive=!lrActive;
+  const bar=document.getElementById('lrBar'),ctrl=document.getElementById('lrControls');
+  if(lrActive){bar.style.display='block';bar.style.top=(lrY-18)+'px';ctrl.style.display='flex';}
+  else{bar.style.display='none';ctrl.style.display='none';}
+}
+function lrMove(dy){lrY=Math.max(60,Math.min(window.innerHeight-60,lrY+dy));document.getElementById('lrBar').style.top=(lrY-18)+'px';}
+document.addEventListener('touchstart',function(e){
+  if(!lrActive)return;
+  const bar=document.getElementById('lrBar');
+  const ty=e.touches[0].clientY;
+  if(Math.abs(ty-(parseFloat(bar.style.top||'200')+18))<40){
+    function onMove(ev){lrY=ev.touches[0].clientY;bar.style.top=(lrY-18)+'px';}
+    function onEnd(){document.removeEventListener('touchmove',onMove);document.removeEventListener('touchend',onEnd);}
+    document.addEventListener('touchmove',onMove);document.addEventListener('touchend',onEnd);
+  }
+},{passive:true});
+render();
+</script>
+</body>
+</html>

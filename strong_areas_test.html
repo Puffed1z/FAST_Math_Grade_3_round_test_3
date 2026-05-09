@@ -1,0 +1,1021 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FAST Mathematics — Grade 3</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --navy: #003865;
+    --blue: #0060a9;
+    --blue-light: #d6eaf8;
+    --selected: #0060a9;
+    --selected-bg: #cce3f5;
+    --correct: #1a7a1a;
+    --correct-bg: #d4edda;
+    --incorrect: #c0392b;
+    --incorrect-bg: #fde8e6;
+    --gray1: #f4f4f4;
+    --gray2: #e8e8e8;
+    --gray3: #c0c0c0;
+    --gray4: #767676;
+    --text: #1a1a1a;
+    --border: #b0b0b0;
+  }
+
+  html, body { height: 100%; }
+
+  body {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 15px;
+    background: #e0e0e0;
+    color: var(--text);
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+  }
+
+  /* ── TOP BAR ── */
+  .topbar {
+    background: var(--navy);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px;
+    height: 44px;
+    flex-shrink: 0;
+    gap: 12px;
+  }
+
+  .topbar-left {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+
+  .topbar-logo {
+    font-size: 13px;
+    font-weight: bold;
+    letter-spacing: 0.5px;
+    white-space: nowrap;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .topbar-logo .fl-flag {
+    width: 28px;
+    height: 18px;
+    background: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 2px;
+    overflow: hidden;
+    flex-shrink: 0;
+  }
+
+  .topbar-logo .fl-flag svg { width: 28px; height: 18px; }
+
+  .topbar-divider { width: 1px; height: 24px; background: rgba(255,255,255,0.3); }
+
+  .topbar-test-name {
+    font-size: 12px;
+    color: rgba(255,255,255,0.85);
+    white-space: nowrap;
+  }
+
+  .topbar-right {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .topbar-timer {
+    font-size: 13px;
+    color: rgba(255,255,255,0.9);
+    font-variant-numeric: tabular-nums;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .topbar-timer svg { opacity: 0.8; }
+
+  /* ── TOOLBAR ── */
+  .toolbar {
+    background: var(--gray1);
+    border-bottom: 2px solid var(--gray3);
+    display: flex;
+    align-items: center;
+    padding: 0 16px;
+    height: 40px;
+    gap: 4px;
+    flex-shrink: 0;
+  }
+
+  .tool-btn {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    padding: 5px 10px;
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    font-size: 12px;
+    cursor: pointer;
+    color: var(--text);
+    font-family: Arial, Helvetica, sans-serif;
+    transition: background 0.1s;
+    white-space: nowrap;
+  }
+
+  .tool-btn:hover { background: var(--gray2); }
+  .tool-btn svg { flex-shrink: 0; }
+  .tool-sep { width: 1px; height: 22px; background: var(--gray3); margin: 0 4px; }
+
+  /* ── MAIN LAYOUT ── */
+  .main {
+    display: flex;
+    flex: 1;
+    overflow: hidden;
+  }
+
+  /* ── LEFT SIDEBAR ── */
+  .sidebar {
+    width: 64px;
+    background: var(--gray1);
+    border-right: 1px solid var(--gray3);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 10px 0;
+    gap: 4px;
+    overflow-y: auto;
+    flex-shrink: 0;
+  }
+
+  .q-dot {
+    width: 38px;
+    height: 30px;
+    border-radius: 3px;
+    border: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: bold;
+    cursor: pointer;
+    background: white;
+    color: var(--text);
+    transition: all 0.1s;
+  }
+
+  .q-dot:hover { background: var(--gray2); }
+  .q-dot.active { background: var(--navy); color: white; border-color: var(--navy); }
+  .q-dot.answered { background: var(--blue); color: white; border-color: var(--blue); }
+  .q-dot.correct-dot { background: var(--correct); color: white; border-color: var(--correct); }
+  .q-dot.incorrect-dot { background: var(--incorrect); color: white; border-color: var(--incorrect); }
+
+  /* ── CONTENT AREA ── */
+  .content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    background: white;
+  }
+
+  .question-area {
+    flex: 1;
+    overflow-y: auto;
+    padding: 28px 36px 20px;
+  }
+
+  .question-header {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    margin-bottom: 20px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--gray2);
+  }
+
+  .q-label {
+    font-size: 13px;
+    font-weight: bold;
+    color: var(--gray4);
+    white-space: nowrap;
+  }
+
+  .q-standard {
+    font-size: 11px;
+    color: var(--gray4);
+    background: var(--gray1);
+    border: 1px solid var(--gray3);
+    border-radius: 3px;
+    padding: 2px 7px;
+    white-space: nowrap;
+  }
+
+  .question-text {
+    font-size: 16px;
+    line-height: 1.6;
+    color: var(--text);
+    margin-bottom: 24px;
+    max-width: 700px;
+  }
+
+  .question-text em {
+    font-style: normal;
+    font-weight: bold;
+  }
+
+  /* ── ANSWER CHOICES ── */
+  .choices-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    max-width: 620px;
+  }
+
+  .choice-item {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    cursor: pointer;
+    transition: all 0.12s;
+    background: white;
+    overflow: hidden;
+  }
+
+  .choice-item:hover { border-color: var(--blue); background: #f0f7ff; }
+
+  .choice-item.selected {
+    border-color: var(--selected);
+    background: var(--selected-bg);
+  }
+
+  .choice-item.correct-ans {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+  }
+
+  .choice-item.wrong-ans {
+    border-color: var(--incorrect);
+    background: var(--incorrect-bg);
+  }
+
+  .choice-letter-box {
+    width: 42px;
+    min-height: 42px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 14px;
+    border-right: 1px solid var(--border);
+    background: var(--gray1);
+    color: var(--text);
+    flex-shrink: 0;
+    align-self: stretch;
+    transition: all 0.12s;
+  }
+
+  .choice-item.selected .choice-letter-box {
+    background: var(--selected);
+    color: white;
+    border-right-color: var(--selected);
+  }
+
+  .choice-item.correct-ans .choice-letter-box {
+    background: var(--correct);
+    color: white;
+    border-right-color: var(--correct);
+  }
+
+  .choice-item.wrong-ans .choice-letter-box {
+    background: var(--incorrect);
+    color: white;
+    border-right-color: var(--incorrect);
+  }
+
+  .choice-text {
+    padding: 10px 16px;
+    font-size: 15px;
+    line-height: 1.4;
+    flex: 1;
+  }
+
+  /* Shape grid choices */
+  .shape-choices {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    max-width: 560px;
+  }
+
+  .shape-choice-item {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    cursor: pointer;
+    transition: all 0.12s;
+    background: white;
+    overflow: hidden;
+  }
+
+  .shape-choice-item:hover { border-color: var(--blue); background: #f0f7ff; }
+  .shape-choice-item.selected { border-color: var(--selected); background: var(--selected-bg); }
+  .shape-choice-item.correct-ans { border-color: var(--correct); background: var(--correct-bg); }
+  .shape-choice-item.wrong-ans { border-color: var(--incorrect); background: var(--incorrect-bg); }
+
+  .shape-choice-header {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    width: 100%;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .shape-choice-item .choice-letter-box {
+    width: 38px;
+    min-height: 36px;
+    border-right: 1px solid var(--border);
+    border-bottom: none;
+  }
+
+  .shape-choice-item.selected .choice-letter-box { background: var(--selected); color: white; border-right-color: var(--selected); }
+  .shape-choice-item.correct-ans .choice-letter-box { background: var(--correct); color: white; border-right-color: var(--correct); }
+  .shape-choice-item.wrong-ans .choice-letter-box { background: var(--incorrect); color: white; border-right-color: var(--incorrect); }
+
+  .shape-choice-label {
+    padding: 8px 12px;
+    font-size: 13px;
+    font-weight: bold;
+    color: var(--gray4);
+  }
+
+  .shape-choice-body {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 16px;
+    width: 100%;
+  }
+
+  /* Fraction display */
+  .frac {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    vertical-align: middle;
+    margin: 0 3px;
+    font-size: 15px;
+    line-height: 1.1;
+  }
+  .frac .num, .frac .den { display: block; text-align: center; padding: 1px 4px; }
+  .frac .bar { border-top: 1.5px solid currentColor; width: 100%; }
+
+  /* ── FEEDBACK ── */
+  .feedback-box {
+    display: none;
+    margin-top: 20px;
+    padding: 12px 16px;
+    border-left: 4px solid var(--border);
+    background: var(--gray1);
+    font-size: 14px;
+    line-height: 1.5;
+    max-width: 660px;
+    border-radius: 0 3px 3px 0;
+  }
+
+  .feedback-box.show { display: block; }
+  .feedback-box.correct { border-left-color: var(--correct); background: var(--correct-bg); color: #155724; }
+  .feedback-box.incorrect { border-left-color: var(--incorrect); background: var(--incorrect-bg); color: #721c24; }
+
+  /* ── BOTTOM NAV ── */
+  .bottom-nav {
+    background: var(--gray1);
+    border-top: 2px solid var(--gray3);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 20px;
+    flex-shrink: 0;
+    gap: 12px;
+  }
+
+  .nav-btn {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 20px;
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.12s;
+    background: white;
+    color: var(--text);
+  }
+
+  .nav-btn:hover { background: var(--gray2); }
+  .nav-btn:disabled { opacity: 0.4; cursor: default; background: white; }
+
+  .nav-btn.primary {
+    background: var(--blue);
+    color: white;
+    border-color: var(--blue);
+  }
+
+  .nav-btn.primary:hover { background: #004f8c; border-color: #004f8c; }
+
+  .nav-btn.submit-all {
+    background: var(--navy);
+    color: white;
+    border-color: var(--navy);
+  }
+
+  .nav-btn.submit-all:hover { background: #002a4d; }
+
+  .progress-text {
+    font-size: 12px;
+    color: var(--gray4);
+    text-align: center;
+  }
+
+  .progress-bar-wrap {
+    flex: 1;
+    max-width: 280px;
+  }
+
+  .progress-bar-track {
+    height: 6px;
+    background: var(--gray2);
+    border-radius: 99px;
+    overflow: hidden;
+    margin-top: 4px;
+  }
+
+  .progress-bar-fill {
+    height: 100%;
+    background: var(--blue);
+    border-radius: 99px;
+    transition: width 0.3s;
+  }
+
+  /* ── RESULT MODAL ── */
+  .modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.5);
+    z-index: 100;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .modal-overlay.show { display: flex; }
+
+  .modal {
+    background: white;
+    border: 2px solid var(--navy);
+    border-radius: 4px;
+    padding: 32px 36px;
+    max-width: 460px;
+    width: 90%;
+    text-align: center;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.25);
+  }
+
+  .modal-title {
+    font-size: 20px;
+    font-weight: bold;
+    color: var(--navy);
+    margin-bottom: 8px;
+  }
+
+  .modal-score {
+    font-size: 42px;
+    font-weight: bold;
+    color: var(--navy);
+    margin: 12px 0 4px;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .modal-sub {
+    font-size: 14px;
+    color: var(--gray4);
+    margin-bottom: 20px;
+  }
+
+  .modal-level {
+    font-size: 15px;
+    font-weight: bold;
+    padding: 8px 20px;
+    border-radius: 3px;
+    margin-bottom: 24px;
+    display: inline-block;
+  }
+
+  .modal-level.l4 { background: #d4edda; color: var(--correct); border: 1px solid #b8dac0; }
+  .modal-level.l3 { background: #d6eaf8; color: var(--blue); border: 1px solid #a9ccec; }
+  .modal-level.l2 { background: #fff3cd; color: #856404; border: 1px solid #ffe08a; }
+  .modal-level.l1 { background: var(--incorrect-bg); color: var(--incorrect); border: 1px solid #f5b5ae; }
+
+  .modal-actions {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+  }
+
+  /* ── SECTION DIVIDER ── */
+  .section-divider {
+    display: none; /* hidden — we show one Q at a time */
+  }
+
+  /* ── REVIEW MODE ── */
+  body.review-mode .question-area { padding-bottom: 32px; }
+</style>
+</head>
+<body>
+
+<!-- TOP BAR -->
+<div class="topbar">
+  <div class="topbar-left">
+    <div class="topbar-logo">
+      <div class="fl-flag">
+        <svg viewBox="0 0 28 18" xmlns="http://www.w3.org/2000/svg">
+          <rect width="28" height="18" fill="white"/>
+          <line x1="0" y1="0" x2="28" y2="18" stroke="#c60c30" stroke-width="2.5"/>
+          <line x1="28" y1="0" x2="0" y2="18" stroke="#c60c30" stroke-width="2.5"/>
+          <circle cx="14" cy="9" r="5" fill="#003865"/>
+          <text x="14" y="12.5" text-anchor="middle" font-size="6" fill="white" font-family="Arial" font-weight="bold">FL</text>
+        </svg>
+      </div>
+      Florida Statewide Assessments
+    </div>
+    <div class="topbar-divider"></div>
+    <div class="topbar-test-name">FAST Mathematics · Grade 3 · Practice</div>
+  </div>
+  <div class="topbar-right">
+    <div class="topbar-timer">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+      <span id="timerDisplay">45:00</span>
+    </div>
+  </div>
+</div>
+
+<!-- TOOLBAR -->
+<div class="toolbar">
+  <button class="tool-btn">
+    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
+    Review
+  </button>
+  <div class="tool-sep"></div>
+  <button class="tool-btn">
+    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+    Flag
+  </button>
+  <div class="tool-sep"></div>
+  <button class="tool-btn">
+    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+    Zoom
+  </button>
+  <button class="tool-btn">
+    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+    Color Contrast
+  </button>
+  <div class="tool-sep"></div>
+  <button class="tool-btn">
+    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+    Line Reader
+  </button>
+  <button class="tool-btn">
+    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+    Scratch Work
+  </button>
+</div>
+
+<!-- MAIN -->
+<div class="main">
+
+  <!-- SIDEBAR -->
+  <div class="sidebar" id="sidebar">
+    <!-- dots injected by JS -->
+  </div>
+
+  <!-- CONTENT -->
+  <div class="content">
+    <div class="question-area" id="questionArea">
+      <!-- question injected by JS -->
+    </div>
+
+    <!-- BOTTOM NAV -->
+    <div class="bottom-nav">
+      <button class="nav-btn" id="prevBtn" onclick="goTo(currentQ - 1)" disabled>
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>
+        Back
+      </button>
+
+      <div style="display:flex;flex-direction:column;align-items:center;gap:4px;">
+        <div class="progress-text" id="progressLabel">Question 1 of 11</div>
+        <div class="progress-bar-wrap">
+          <div class="progress-bar-track">
+            <div class="progress-bar-fill" id="progressFill" style="width:9%"></div>
+          </div>
+        </div>
+      </div>
+
+      <div style="display:flex;gap:8px;align-items:center;">
+        <button class="nav-btn primary" id="nextBtn" onclick="goTo(currentQ + 1)">
+          Next
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+        </button>
+        <button class="nav-btn submit-all" id="submitBtn" style="display:none" onclick="submitTest()">
+          Submit Test
+        </button>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- RESULT MODAL -->
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal">
+    <div class="modal-title">Test Results</div>
+    <div class="modal-score" id="modalScore">—</div>
+    <div class="modal-sub" id="modalSub">—</div>
+    <div class="modal-level" id="modalLevel">—</div>
+    <div class="modal-actions">
+      <button class="nav-btn" onclick="closeModal()">Review Answers</button>
+      <button class="nav-btn primary" onclick="retryTest()">Try Again</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ─────────────────────────────────────────────
+//  DATA
+// ─────────────────────────────────────────────
+const QUESTIONS = [
+  {
+    id: 1, standard: "MA.3.GR.1.2",
+    text: "A square, a rectangle, and a rhombus are all quadrilaterals. What do <em>all</em> quadrilaterals have in common?",
+    type: "mc",
+    choices: [
+      { val:"A", text:"All sides are equal" },
+      { val:"B", text:"Exactly 4 sides and 4 angles" },
+      { val:"C", text:"All angles are right angles" },
+      { val:"D", text:"Two pairs of parallel sides" },
+    ],
+    answer: "B",
+    explain: "All quadrilaterals share exactly 4 sides and 4 angles — that is what defines them as quadrilaterals."
+  },
+  {
+    id: 2, standard: "MA.3.GR.1.2",
+    text: "Which shape is <em>not</em> a quadrilateral?",
+    type: "shape",
+    choices: [
+      { val:"A", label:"A", shapeName:"Triangle",
+        svg:`<svg width="80" height="70" viewBox="0 0 80 70"><polygon points="40,6 74,64 6,64" fill="none" stroke="#1a1a1a" stroke-width="2"/></svg>` },
+      { val:"B", label:"B", shapeName:"Trapezoid",
+        svg:`<svg width="80" height="70" viewBox="0 0 80 70"><polygon points="20,64 60,64 72,12 8,12" fill="none" stroke="#1a1a1a" stroke-width="2"/></svg>` },
+      { val:"C", label:"C", shapeName:"Pentagon",
+        svg:`<svg width="80" height="70" viewBox="0 0 80 70"><polygon points="40,4 76,30 62,68 18,68 4,30" fill="none" stroke="#1a1a1a" stroke-width="2"/></svg>` },
+      { val:"D", label:"D", shapeName:"Rhombus",
+        svg:`<svg width="80" height="70" viewBox="0 0 80 70"><polygon points="40,4 76,36 40,68 4,36" fill="none" stroke="#1a1a1a" stroke-width="2"/></svg>` },
+    ],
+    answer: "C",
+    explain: "A pentagon has 5 sides. Quadrilaterals must have exactly 4 sides — so triangles, trapezoids, and rhombuses qualify, but a pentagon does not."
+  },
+  {
+    id: 3, standard: "MA.3.GR.1.2",
+    text: "A parallelogram has two pairs of parallel sides. Which two shapes are <em>also</em> parallelograms?",
+    type: "mc",
+    choices: [
+      { val:"A", text:"Trapezoid and rhombus" },
+      { val:"B", text:"Square and trapezoid" },
+      { val:"C", text:"Triangle and rectangle" },
+      { val:"D", text:"Rectangle and square" },
+    ],
+    answer: "D",
+    explain: "Rectangles and squares both have two pairs of parallel sides, making them special types of parallelograms."
+  },
+  {
+    id: 4, standard: "MA.3.GR.1.2",
+    text: "Lily draws a quadrilateral with <em>only one</em> pair of parallel sides. What shape did she draw?",
+    type: "mc",
+    choices: [
+      { val:"A", text:"Trapezoid" },
+      { val:"B", text:"Rectangle" },
+      { val:"C", text:"Rhombus" },
+      { val:"D", text:"Square" },
+    ],
+    answer: "A",
+    explain: "A trapezoid has exactly one pair of parallel sides. Rectangles, rhombuses, and squares all have two pairs of parallel sides."
+  },
+  {
+    id: 5, standard: "MA.3.GR.1.2",
+    text: "Which statement about a square is <em>true</em>?",
+    type: "mc",
+    choices: [
+      { val:"A", text:"A square is not a rectangle" },
+      { val:"B", text:"A square is a special rectangle with all sides equal" },
+      { val:"C", text:"A square has 5 sides" },
+      { val:"D", text:"A square is not a quadrilateral" },
+    ],
+    answer: "B",
+    explain: "A square is a special type of rectangle — it has 4 right angles AND all 4 sides are equal in length."
+  },
+  {
+    id: 6, standard: "MA.3.NSO.2.3",
+    text: "Which multiplication equation has a product of 4,200?",
+    type: "mc",
+    choices: [
+      { val:"A", text:"6 × 70" },
+      { val:"B", text:"4 × 200" },
+      { val:"C", text:"7 × 600" },
+      { val:"D", text:"4 × 20" },
+    ],
+    answer: "C",
+    explain: "7 × 600 = 7 × 6 × 100 = 42 × 100 = 4,200."
+  },
+  {
+    id: 7, standard: "MA.3.NSO.2.3",
+    text: "A school orders 9 packs of paper. Each pack has 500 sheets. How many sheets of paper are there in all?",
+    type: "mc",
+    choices: [
+      { val:"A", text:"450" },
+      { val:"B", text:"509" },
+      { val:"C", text:"4,050" },
+      { val:"D", text:"4,500" },
+    ],
+    answer: "D",
+    explain: "9 × 500 = 9 × 5 × 100 = 45 × 100 = 4,500."
+  },
+  {
+    id: 8, standard: "MA.3.NSO.2.3",
+    text: "What is the missing number?\n\n8 × ___ = 720",
+    type: "mc",
+    choices: [
+      { val:"A", text:"90" },
+      { val:"B", text:"9" },
+      { val:"C", text:"80" },
+      { val:"D", text:"900" },
+    ],
+    answer: "A",
+    explain: "8 × 90 = 8 × 9 × 10 = 72 × 10 = 720. The missing number is 90."
+  },
+  {
+    id: 9, standard: "MA.3.AR.1.1",
+    text: "Which expression equals 9 × 15 using the distributive property?",
+    type: "mc",
+    choices: [
+      { val:"A", text:"(9 + 10) × (9 + 5)" },
+      { val:"B", text:"(9 × 10) + (9 × 5)" },
+      { val:"C", text:"9 + 15" },
+      { val:"D", text:"(9 × 1) + 5" },
+    ],
+    answer: "B",
+    explain: "Distributive property: 9 × 15 = (9 × 10) + (9 × 5) = 90 + 45 = 135."
+  },
+  {
+    id: 10, standard: "MA.3.AR.1.1",
+    text: "A farmer plants 7 rows of corn. Each row has 24 plants. Using the distributive property, how many plants are there in all?",
+    type: "mc",
+    choices: [
+      { val:"A", text:"148" },
+      { val:"B", text:"156" },
+      { val:"C", text:"168" },
+      { val:"D", text:"174" },
+    ],
+    answer: "C",
+    explain: "7 × 24 = (7 × 20) + (7 × 4) = 140 + 28 = 168."
+  },
+  {
+    id: 11, standard: "MA.3.AR.1.1",
+    text: "(5 × 30) + (5 × 8) = 5 × ___\n\nWhat is the missing number?",
+    type: "mc",
+    choices: [
+      { val:"A", text:"38" },
+      { val:"B", text:"35" },
+      { val:"C", text:"190" },
+      { val:"D", text:"30" },
+    ],
+    answer: "A",
+    explain: "(5 × 30) + (5 × 8) = 5 × (30 + 8) = 5 × 38. The missing number is 38."
+  },
+];
+
+// ─────────────────────────────────────────────
+//  STATE
+// ─────────────────────────────────────────────
+let currentQ = 0;
+let selected = {};
+let submitted = false;
+
+// ─────────────────────────────────────────────
+//  TIMER
+// ─────────────────────────────────────────────
+let seconds = 45 * 60;
+const timerEl = document.getElementById('timerDisplay');
+const timerInterval = setInterval(() => {
+  if (submitted) { clearInterval(timerInterval); return; }
+  seconds = Math.max(0, seconds - 1);
+  const m = Math.floor(seconds / 60).toString().padStart(2, '0');
+  const s = (seconds % 60).toString().padStart(2, '0');
+  timerEl.textContent = m + ':' + s;
+  if (seconds === 0) submitTest();
+}, 1000);
+
+// ─────────────────────────────────────────────
+//  RENDER
+// ─────────────────────────────────────────────
+function renderSidebar() {
+  const sb = document.getElementById('sidebar');
+  sb.innerHTML = '';
+  QUESTIONS.forEach((q, i) => {
+    const dot = document.createElement('div');
+    dot.className = 'q-dot';
+    dot.textContent = i + 1;
+    if (i === currentQ) dot.classList.add('active');
+    if (submitted) {
+      dot.classList.add(selected[i] === q.answer ? 'correct-dot' : 'incorrect-dot');
+    } else if (selected[i]) {
+      dot.classList.add('answered');
+    }
+    dot.onclick = () => goTo(i);
+    sb.appendChild(dot);
+  });
+}
+
+function renderQuestion() {
+  const q = QUESTIONS[currentQ];
+  const area = document.getElementById('questionArea');
+
+  let choicesHTML = '';
+
+  if (q.type === 'mc') {
+    choicesHTML = `<ul class="choices-list" id="choicesList">` +
+      q.choices.map(c => {
+        let cls = 'choice-item';
+        if (submitted) {
+          if (c.val === q.answer) cls += ' correct-ans';
+          else if (selected[currentQ] === c.val && c.val !== q.answer) cls += ' wrong-ans';
+        } else if (selected[currentQ] === c.val) {
+          cls += ' selected';
+        }
+        return `<li class="${cls}" data-val="${c.val}" onclick="pick('${c.val}')">
+          <div class="choice-letter-box">${c.val}</div>
+          <div class="choice-text">${c.text}</div>
+        </li>`;
+      }).join('') + `</ul>`;
+  } else {
+    choicesHTML = `<div class="shape-choices" id="choicesList">` +
+      q.choices.map(c => {
+        let cls = 'shape-choice-item';
+        if (submitted) {
+          if (c.val === q.answer) cls += ' correct-ans';
+          else if (selected[currentQ] === c.val && c.val !== q.answer) cls += ' wrong-ans';
+        } else if (selected[currentQ] === c.val) {
+          cls += ' selected';
+        }
+        return `<div class="${cls}" data-val="${c.val}" onclick="pick('${c.val}')">
+          <div class="shape-choice-header">
+            <div class="choice-letter-box">${c.val}</div>
+            <div class="shape-choice-label">${c.shapeName}</div>
+          </div>
+          <div class="shape-choice-body">${c.svg}</div>
+        </div>`;
+      }).join('') + `</div>`;
+  }
+
+  const feedbackShow = submitted ? 'show' : '';
+  const feedbackCls = submitted ? (selected[currentQ] === q.answer ? 'correct' : 'incorrect') : '';
+  const feedbackIcon = selected[currentQ] === q.answer ? '✓ Correct. ' : (selected[currentQ] ? '✗ Incorrect. ' : '✗ Not answered. ');
+  const feedbackHTML = submitted
+    ? `<div class="feedback-box show ${feedbackCls}"><strong>${feedbackIcon}</strong>${q.explain}</div>`
+    : `<div class="feedback-box"></div>`;
+
+  const qText = q.text.replace(/\n/g, '<br>');
+
+  area.innerHTML = `
+    <div class="question-header">
+      <span class="q-label">Question ${currentQ + 1} of ${QUESTIONS.length}</span>
+      <span class="q-standard">${q.standard}</span>
+    </div>
+    <div class="question-text">${qText}</div>
+    ${choicesHTML}
+    ${feedbackHTML}
+  `;
+
+  // Update progress
+  const pct = ((currentQ + 1) / QUESTIONS.length * 100).toFixed(0);
+  document.getElementById('progressFill').style.width = pct + '%';
+  document.getElementById('progressLabel').textContent = `Question ${currentQ + 1} of ${QUESTIONS.length}`;
+
+  // Nav buttons
+  document.getElementById('prevBtn').disabled = currentQ === 0;
+  const isLast = currentQ === QUESTIONS.length - 1;
+  document.getElementById('nextBtn').style.display = isLast ? 'none' : 'flex';
+  document.getElementById('submitBtn').style.display = isLast && !submitted ? 'flex' : 'none';
+  if (submitted) {
+    document.getElementById('nextBtn').style.display = isLast ? 'none' : 'flex';
+    document.getElementById('submitBtn').style.display = 'none';
+  }
+}
+
+function pick(val) {
+  if (submitted) return;
+  selected[currentQ] = val;
+  renderQuestion();
+  renderSidebar();
+}
+
+function goTo(idx) {
+  if (idx < 0 || idx >= QUESTIONS.length) return;
+  currentQ = idx;
+  renderQuestion();
+  renderSidebar();
+  document.getElementById('questionArea').scrollTop = 0;
+}
+
+// ─────────────────────────────────────────────
+//  SUBMIT
+// ─────────────────────────────────────────────
+function submitTest() {
+  if (submitted) return;
+  submitted = true;
+  clearInterval(timerInterval);
+
+  let correct = 0;
+  QUESTIONS.forEach((q, i) => { if (selected[i] === q.answer) correct++; });
+
+  const pct = Math.round(correct / QUESTIONS.length * 100);
+  document.getElementById('modalScore').textContent = `${correct} / ${QUESTIONS.length}`;
+  document.getElementById('modalSub').textContent = `${pct}% — ${correct} correct out of ${QUESTIONS.length} questions`;
+
+  let level, levelCls;
+  if (pct >= 80) { level = 'Achievement Level 4 — Exceeds Expectations'; levelCls = 'l4'; }
+  else if (pct >= 60) { level = 'Achievement Level 3 — Meets Expectations'; levelCls = 'l3'; }
+  else if (pct >= 40) { level = 'Achievement Level 2 — Approaches Expectations'; levelCls = 'l2'; }
+  else { level = 'Achievement Level 1 — Below Expectations'; levelCls = 'l1'; }
+
+  const lv = document.getElementById('modalLevel');
+  lv.textContent = level;
+  lv.className = 'modal-level ' + levelCls;
+
+  document.getElementById('modalOverlay').classList.add('show');
+
+  // re-render current Q to show feedback
+  renderQuestion();
+  renderSidebar();
+}
+
+function closeModal() {
+  document.getElementById('modalOverlay').classList.remove('show');
+  document.getElementById('nextBtn').style.display = 'flex';
+  document.getElementById('submitBtn').style.display = 'none';
+  renderQuestion();
+}
+
+function retryTest() {
+  selected = {};
+  submitted = false;
+  currentQ = 0;
+  seconds = 45 * 60;
+  document.getElementById('modalOverlay').classList.remove('show');
+  renderQuestion();
+  renderSidebar();
+  // restart timer
+  const iv = setInterval(() => {
+    if (submitted) { clearInterval(iv); return; }
+    seconds = Math.max(0, seconds - 1);
+    const m = Math.floor(seconds / 60).toString().padStart(2, '0');
+    const s = (seconds % 60).toString().padStart(2, '0');
+    timerEl.textContent = m + ':' + s;
+    if (seconds === 0) submitTest();
+  }, 1000);
+}
+
+// ─────────────────────────────────────────────
+//  INIT
+// ─────────────────────────────────────────────
+renderSidebar();
+renderQuestion();
+</script>
+</body>
+</html>
